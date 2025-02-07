@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Busca el dispositivo</title>
+  <style>
+    body {
+      background-color: #1c1c1c;
+      color: #ffffff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    h1 {
+      margin-top: 50px;
+      font-size: 2.5em;
+    }
+    input, select {
+      padding: 10px;
+      font-size: 1em;
+      border-radius: 5px;
+      border: 1px solid #717171;
+      background-color: #222;
+      color: #ffffff;
+      width: 80%;
+      max-width: 300px;
+      margin-top: 10px;
+      display: block;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+    li {
+      background: #222;
+      color: white;
+      padding: 10px;
+      margin: 2px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    li:hover {
+      background: #2ec531;
+    }
+    .device-info {
+      margin-top: 30px;
+      padding: 20px;
+      background: #222;
+      border-radius: 10px;
+      width: 80%;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: left;
+      display: none;
+      overflow: hidden;
+    }
+    .device-info img {
+      width: 200px;
+      height: 350px;
+      float: left;
+      margin-right: 50px;
+    }
+    .device-info p {
+      margin: 5px 0;
+    }
+    /* Regla para anular hover en las especificaciones */
+    #deviceSpecs li:hover {
+      background: #222;
+      cursor: default;
+    }
+    /* Regla para estilizar el botón "Precio" */
+    .precio-btn {
+      display: inline-block;
+      background: #40ff40;
+      color: #fff;
+      padding: 5px 10px;
+      border-radius: 5px;
+      text-decoration: none;
+      font-size: 0.9em;
+      margin-top: 10px;
+    }
+    .precio-btn:hover {
+      background: #47fd53;
+    }
+    footer {
+      margin-top: 50px;
+      font-size: 0.8em;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h1>Busca el dispositivo</h1>
+  
+  <input type="text" id="search" placeholder="Escribe el dispositivo..." oninput="filterDevices()" autocomplete="off">
+  <ul id="deviceList"></ul>
+  
+  <select id="deviceSelect" onchange="showDeviceInfo()">
+    <option value="">Selecciona un dispositivo</option>
+    <option value="iPhone 16">iPhone 16</option>
+    <option value="Samsung Galaxy S24">Samsung Galaxy S24</option>
+    <option value="Google Pixel 8">Google Pixel 8</option>
+    <option value="OnePlus 12">OnePlus 12</option>
+    <option value="Asus Rog Phone 8">Asus Rog Phone 8</option>
+    <option value="Xiaomi Mi 13 Pro">Xiaomi Mi 13 Pro</option>
+    <option value="Huawei P60 Pro">Huawei P60 Pro</option>
+    <option value="Sony Xperia 1 V">Sony Xperia 1 V</option>
+    <option value="Motorola Edge 40">Motorola Edge 40</option>
+    <option value="Oppo Find X6 Pro">Oppo Find X6 Pro</option>
+    <option value="Realme GT 3">Realme GT 3</option>
+    <option value="Vivo X90 Pro">Vivo X90 Pro</option>
+    
+    <!-- Dispositivos de Huawei -->
+    <option value="Huawei Mate 50 Pro">Huawei Mate 50 Pro</option>
+    <option value="Huawei P50 Pro">Huawei P50 Pro</option>
+    <option value="Huawei Nova 10 Pro">Huawei Nova 10 Pro</option>
+    <option value="Huawei Honor Magic 5 Pro">Huawei Honor Magic 5 Pro</option>
+    <option value="Huawei Mate 40 Pro">Huawei Mate 40 Pro</option>
+    
+    <!-- Dispositivos de Redmi -->
+    <option value="Redmi Note 12 Pro">Redmi Note 12 Pro</option>
+    <option value="Redmi K40 Pro">Redmi K40 Pro</option>
+    <option value="Redmi Note 11 Pro+">Redmi Note 11 Pro+</option>
+    <option value="Redmi 10X Pro">Redmi 10X Pro</option>
+    <option value="Redmi Note 10 Pro">Redmi Note 10 Pro</option>
+    <option value="Xiaomi 14 Pro">Xiaomi 14 Pro</option>
+    <option value="Xiaomi 14">Xiaomi 14</option>
+    <option value="Xiaomi 15 Pro">Xiaomi 15 Pro</option>
+    <option value="Xiaomi 15">Xiaomi 15</option>
+    <option value="Xiaomi 13 Ultra">Xiaomi 13 Ultra</option>
+    <option value="Xiaomi 12T Pro">Xiaomi 12T Pro</option>
+    
+    <!-- Dispositivos de iPhone -->
+    <option value="iPhone 11">iPhone 11</option>
+    <option value="iPhone 11 Pro">iPhone 11 Pro</option>
+    <option value="iPhone 11 Pro Max">iPhone 11 Pro Max</option>
+    <option value="iPhone 12">iPhone 12</option>
+    <option value="iPhone 12 Pro">iPhone 12 Pro</option>
+    <option value="iPhone 12 Pro Max">iPhone 12 Pro Max</option>
+    <option value="iPhone 13">iPhone 13</option>
+    <option value="iPhone 13 Pro">iPhone 13 Pro</option>
+    <option value="iPhone 13 Pro Max">iPhone 13 Pro Max</option>
+    <option value="iPhone 14">iPhone 14</option>
+    <option value="iPhone 14 Pro">iPhone 14 Pro</option>
+    <option value="iPhone 14 Pro Max">iPhone 14 Pro Max</option>
+    <option value="iPhone 15">iPhone 15</option>
+    <option value="iPhone 15 Pro">iPhone 15 Pro</option>
+    <option value="iPhone 15 Pro Max">iPhone 15 Pro Max</option>
+    
+    <!-- Dispositivos de ZTE -->
+    <option value="ZTE Axon 60">ZTE Axon 60</option>
+    <option value="ZTE Axon 60 Lite">ZTE Axon 60 Lite</option>
+    <option value="ZTE Axon 50 5G">ZTE Axon 50 5G</option>
+    <option value="ZTE Axon 50 Lite">ZTE Axon 50 Lite</option>
+    <option value="ZTE Axon 40 Ultra 5G">ZTE Axon 40 Ultra 5G</option>
+    <option value="ZTE Nubia Red Magic 8 Pro">ZTE Nubia Red Magic 8 Pro</option>
+    <option value="ZTE Nubia Z60 Ultra">ZTE Nubia Z60 Ultra</option>
+    
+  </select>
+
+  <div id="deviceDetails" class="device-info">
+    <img id="deviceImage" src="" alt="">
+    <div id="deviceSpecs"></div>
+  </div>
+  
+  <footer>
+    El dispositivo que busques aqui lo encuentras<br>
+    &copy; 2025 Busca el dispositivo
+  </footer>
+
+  <script>
+    const devices = {
+      "iPhone 16": {
+        image: "Ip16.png",
+        specs: [
+          "Pantalla: 6.7\" OLED",
+          "Procesador: A18 Bionic",
+          "RAM: 12 GB",
+          "Almacenamiento: 256 GB",
+          "Batería: 5000 mAh",
+          "Cámara: 50 MP (trasera), 16 MP (frontal)"
+        ],
+        priceLink: "https://www.pccomponentes.com/movil-apple-iphone-16-pro-128gb-titanio-desierto-libre?utm_source=331899&utm_medium=afi&utm_campaign=www.trendencias.com&sv1=affiliate&sv_campaign_id=331899&awc=20981_1738879392_a8290ce2e4aa0f1ccd860dfb8f7c01c7&utm_term=deeplink&utm_content=" // Agrega aquí el link individual para iPhone 16
+      },
+      "Samsung Galaxy S24": {
+        image: "SAM24.png",
+        specs: [
+          "Pantalla: 6.8\" AMOLED 120Hz",
+          "Procesador: Exynos 2400 / Snapdragon 8 Gen 3",
+          "RAM: 12 GB",
+          "Almacenamiento: 512 GB",
+          "Batería: 4800 mAh",
+          "Cámara: 200 MP (trasera), 40 MP (frontal)"
+        ],
+        priceLink: "https://www.amazon.es/dp/B0CNQ6KY5J?tag=xtk-pivot-21&linkCode=ogi&th=1&asc_refurl=296613&asc_source=xataka&asc_campaign=everlasting" // Agrega aquí el link individual para Samsung Galaxy S24
+      },
+      "Google Pixel 8": {
+        image: "pix8.png",
+        specs: [
+          "Pantalla: 6.3\" OLED 120Hz",
+          "Procesador: Google Tensor G3",
+          "RAM: 8 GB",
+          "Almacenamiento: 256 GB",
+          "Batería: 4700 mAh",
+          "Cámara: 50 MP (trasera), 12 MP (frontal)"
+        ],
+        priceLink: "https://encarguelo.com.ec/producto/B0CVYKL34H/google-pixel-8-5g-version-estadounidense-128-gb-obsidiana-desbloqueado-renovado" // Agrega aquí el link individual para Google Pixel 8
+      },
+      "OnePlus 12": {
+        image: "one12.png",
+        specs: [
+          "Pantalla: 6.7\" AMOLED 120Hz",
+          "Procesador: Snapdragon 8 Gen 3",
+          "RAM: 16 GB",
+          "Almacenamiento: 512 GB",
+          "Batería: 5000 mAh",
+          "Cámara: 64 MP (trasera), 32 MP (frontal)"
+        ],
+        priceLink: "https://www.baratazo.com/product/oneplus-12-5g-512gb-16gb-negro-silky-black-pantalla-super-fluid-amoled-2k-de-120hz-camara-principal-hasselblad-50mp-de-4ta-gen-cargador-supervooc-80w/?srsltid=AfmBOor3iyxSUjhNrQc91M-slP7H5ttmosgG_iWNf4Pu0hQysCtVZsKe" // Agrega aquí el link individual para OnePlus 12
+      },
+      "Asus Rog Phone 8": {
+        image: "Asus.webp",
+        specs: [
+          "Pantalla: 6.78\" AMOLED 165Hz",
+          "Procesador: Snapdragon 8 Gen 3",
+          "RAM: 16 GB",
+          "Almacenamiento: 512 GB",
+          "Batería: 6000 mAh",
+          "Cámara: 50 MP (trasera), 32 MP (frontal)"
+        ],
+        priceLink: "https://www.amazon.es/dp/B0CP2FGY64?asc_campaign=everlasting&asc_refurl=295310&asc_source=xataka&linkCode=ogi&tag=xtk-pivot-21&th=1" // Agrega aquí el link individual para Asus Rog Phone 8
+      },
+      "Xiaomi Mi 13 Pro": {
+        image: "xi13.png",
+        specs: [
+          "Pantalla: 6.73\" AMOLED 120Hz",
+          "Procesador: Snapdragon 8 Gen 2",
+          "RAM: 12 GB",
+          "Almacenamiento: 256 GB",
+          "Batería: 4820 mAh",
+          "Cámara: 50 MP (trasera), 32 MP (frontal)"
+        ],
+        priceLink: "https://www.amazon.es/dp/B0BTMC7WP7?tag=xtk-pivot-21&asc_refurl=254481&asc_source=xataka&asc_campaign=everlasting&th=1" // Agrega aquí el link individual para Xiaomi Mi 13 Pro
+      },
+      "Huawei P60 Pro": {
+        image: "P60.png",
+        specs: [
+          "Pantalla: 6.67\" OLED 120Hz",
+          "Procesador: Kirin 9000",
+          "RAM: 8 GB",
+          "Almacenamiento: 256 GB",
+          "Batería: 4800 mAh",
+          "Cámara: 50 MP (trasera), 13 MP (frontal)"
+        ],
+        priceLink: "https://tiendamia.com/ec/p/amz/b0c1gzl24g/huawei-p60-pro-dual-sim-8gb-256gb-global-model" // Agrega aquí el link individual para Huawei P60 Pro
+      },
+      "Sony Xperia 1 V": {
+        image: "xp1.png",
+        specs: [
+          "Pantalla: 6.5\" OLED 120Hz",
+          "Procesador: Snapdragon 8 Gen 2",
+          "RAM: 12 GB",
+          "Almacenamiento: 256 GB",
+          "Batería: 5000 mAh",
+          "Cámara: 48 MP (trasera), 12 MP (frontal)"
+        ],
+        priceLink: "https://tiendamia.com/ec/p/amz/b0b2bdlmlv/sony-xperia-1-iv-xq-ct72-5g-dual-256gb-12gb-ram" // Agrega aquí el link individual para Sony Xperia 1 V
+      },
+      "Motorola Edge 40": {
+        image: "ed40.png",
+        specs: [
+          "Pantalla: 6.7\" AMOLED 144Hz",
+          "Procesador: Dimensity 8020",
+          "RAM: 8 GB",
+          "Almacenamiento: 128 GB",
+          "Batería: 4600 mAh",
+          "Cámara: 50 MP (trasera), 32 MP (frontal)"
+        ],
+        priceLink: "https://dttech-ec.com/producto/motorola-edge-40-8-ram-256-gb/" // Agrega aquí el link individual para Motorola Edge 40
+      },
+      "Oppo Find X6 Pro": {
+        image: "oppo6.png",
+        specs: [
+          "Pantalla: 6.82\" AMOLED 120Hz",
+          "Procesador: Snapdragon 8 Gen 2",
+          "RAM: 12 GB",
+          "Almacenamiento: 256 GB",
+          "Batería: 5000 mAh",
+          "Cámara: 50 MP (trasera), 32 MP (frontal)"
+        ],
+        priceLink: "https://tiendamia.com/ec/p/mkt/182747_f736638c/smartphone-oppo-find-x6-pro-5g-16g-256g-pantalla-amoled-de" // Agrega aquí el link individual para Oppo Find X6 Pro
+      },
+      "Realme GT 3": {
+        image: "real3.png",
+        specs: [
+          "Pantalla: 6.74\" AMOLED 120Hz",
+          "Procesador: Snapdragon 8 Gen 3",
+          "RAM: 16 GB",
+          "Almacenamiento: 512 GB",
+          "Batería: 5000 mAh",
+          "Cámara: 50 MP (trasera), 32 MP (frontal)"
+        ],
+        priceLink: "https://www.ubuy.ec/es/productde/IPDK75UH6-realme-gt3-smartphone-16-1tb-snapdragon-8-gen1-5g-6-74-inch-144hz-4600-mah-240w-supervooc-charging-50mp-purple" // Agrega aquí el link individual para Realme GT 3
+      },
+      "Vivo X90 Pro": {
+        image: "vi90.png",
+        specs: [
+          "Pantalla: 6.78\" AMOLED 120Hz",
+          "Procesador: Dimensity 9200",
+          "RAM: 12 GB",
+          "Almacenamiento: 256 GB",
+          "Batería: 4800 mAh",
+          "Cámara: 50 MP (trasera), 32 MP (frontal)"
+        ],
+        priceLink: "https://www.amazon.es/dp/B0BTT8Y74L?tag=xtk-pivot-21&asc_refurl=255472&asc_source=xataka&asc_campaign=everlasting" // Agrega aquí el link individual para Vivo X90 Pro
+      },
+      "Huawei Mate 50 Pro": {
+        image: "mate50.png",
+        specs: [
+          "Pantalla: 6.74\" OLED",
+          "Procesador: Kirin 9000",
+          "RAM: 8 GB",
+          "Almacenamiento: 256 GB",
+          "Batería: 4700 mAh",
+          "Cámara: 50 MP (trasera), 12 MP (frontal)"
+        ],
+        priceLink: "https://www.ubuy.ec/es/productde/IEZJN4DDM-huawei-mate-50-pro-6-74-8-256gb-4700mah-vegan-leather" // Agrega aquí el link individual para Huawei Mate 50 Pro
+      },
+      "Huawei P50 Pro": {
+        image: "p50.png",
+        specs: [
+          "Pantalla: 6.6\" OLED",
+          "Procesador: Kirin 9000",
+          "RAM: 8 GB",
+          "Almacenamiento: 128 GB",
+          "Batería: 4360 mAh",
+          "Cámara: 50 MP (trasera), 13 MP (frontal)"
+        ],
+        priceLink: "https://tiendamia.com/ec/p/mkt/115393_056ed487/unidad-de-imagen-dual-en-color-primario-huawei-p50-pro" // Agrega aquí el link individual para Huawei P50 Pro
+      },
+      "Huawei Nova 10 Pro": {
+        image: "nova10.png",
+        specs: [
+          "Pantalla: 6.78\" OLED",
+          "Procesador: Snapdragon 8 Gen 1",
+          "RAM: 8 GB",
+          "Almacenamiento: 256 GB",
+          "Batería: 4500 mAh",
+          "Cámara: 50 MP (trasera), 32 MP (frontal)"
+        ],
+        priceLink: "https://www.mercadolibre.com.ec/huawei-nova-10-pro-dual-sim-256-gb-black-8-gb-ram/p/MEC22322403" // Agrega aquí el link individual para Huawei Nova 10 Pro
+      },
+      "Huawei Honor Magic 5 Pro": {
+        image: "honor5.png",
+        specs: [
+          "Pantalla: 6.81\" OLED",
+          "Procesador: Snapdragon 8 Gen 2",
+          "RAM: 12 GB",
+          "Almacenamiento: 512 GB",
+          "Batería: 5000 mAh",
+          "Cámara: 50 MP (trasera), 12 MP (frontal)"
+        ],
+        priceLink: "https://dttech-ec.com/producto/honor-magic-5-pro-12-ram-512-gb/" // Agrega aquí el link individual para Huawei Honor Magic 5 Pro
+      },
+      "Huawei Mate 40 Pro": {
+        image: "mate40.png",
+        specs: [
+          "Pantalla: 6.76\" OLED",
+          "Procesador: Kirin 9000",
+          "RAM: 8 GB",
+          "Almacenamiento: 256 GB",
+          "Batería: 4400 mAh",
+          "Cámara: 50 MP (trasera), 13 MP (frontal)"
+        ],
+        priceLink: "https://www.amazon.es/dp/B08LQZR9BW?tag=xtk-pivot-21&asc_refurl=228010&asc_source=xataka&asc_campaign=everlasting" // Agrega aquí el link individual para Huawei Mate 40 Pro
+      },
+      "Redmi Note 12 Pro": {
+        image: "note12.png",
+        specs: [
+          "Pantalla: 6.67\" AMOLED",
+          "Procesador: Dimensity 1080",
+          "RAM: 6 GB",
+          "Almacenamiento: 128 GB",
+          "Batería: 5000 mAh",
+          "Cámara: 50 MP (trasera), 16 MP (frontal)"
+        ],
+        priceLink: "https://www.mercadolibre.com.ec/xiaomi-redmi-note-12-pro-5g-dual-sim-256-gb-obsidian-black-8-gb-ram/p/MEC22263907" // Agrega aquí el link individual para Redmi Note 12 Pro
+      },
+      "Redmi K40 Pro": {
+        image: "k40.png",
+        specs: [
+          "Pantalla: 6.67\" AMOLED 120Hz",
+          "Procesador: Snapdragon 888",
+          "RAM: 8 GB",
+          "Almacenamiento: 256 GB",
+          "Batería: 4500 mAh",
+          "Cámara: 108 MP (trasera), 20 MP (frontal)"
+        ],
+        priceLink: "https://mobilestore.ec/producto/xiaomi-redmi-k40-pro/" // Agrega aquí el link individual para Redmi K40 Pro
+      },
+      "Redmi Note 11 Pro+": {
+        image: "note11.png",
+        specs: [
+          "Pantalla: 6.67\" AMOLED 120Hz",
+          "Procesador: Snapdragon 695",
+          "RAM: 8 GB",
+          "Almacenamiento: 128 GB",
+          "Batería: 5000 mAh",
+          "Cámara: 108 MP (trasera), 16 MP (frontal)"
+        ],
+        priceLink: "https://tecnogalaxy.com.ec/xiaomi/xiaomi-redmi-note-11-pro-plus/" // Agrega aquí el link individual para Redmi Note 11 Pro+
+      },
+      "Redmi 10X Pro": {
+        image: "10x.png",
+        specs: [
+          "Pantalla: 6.57\" AMOLED",
+          "Procesador: Dimensity 820",
+          "RAM: 6 GB",
+          "Almacenamiento: 128 GB",
+          "Batería: 4520 mAh",
+          "Cámara: 48 MP (trasera), 20 MP (frontal)"
+        ],
+        priceLink: "http://example.com/redmi10xpro" // Agrega aquí el link individual para Redmi 10X Pro
+      },
+      "Redmi Note 10 Pro": {
+        image: "note10.png",
+        specs: [
+          "Pantalla: 6.67\" AMOLED 120Hz",
+          "Procesador: Snapdragon 732G",
+          "RAM: 6 GB",
+          "Almacenamiento: 128 GB",
+          "Batería: 5020 mAh",
+          "Cámara: 108 MP (trasera), 16 MP (frontal)"
+        ],
+        priceLink: "https://www.tecnovo.com.ec/shop/celxia-note10pro1-1513" // Agrega aquí el link individual para Redmi Note 10 Pro
+      },
+      "iPhone 11": {
+      image: "i11.png",
+      specs: [
+      "Pantalla: 6.1\" LCD",
+      "Procesador: A13 Bionic",
+      "RAM: 4 GB",
+      "Almacenamiento: 64/128/256 GB",
+      "Batería: 3110 mAh",
+      "Cámara: 12 MP (trasera), 12 MP (frontal)"
+       ],
+       priceLink: "https://www.ubuy.ec/es/product/4Z1IM7K22-apple-iphone-11-64gb-red-fully-unlocked-c-grade-refurbished-smartphone"
+     },
+
+"iPhone 11 Pro": {
+  image: "i11p.jpng",
+  specs: [
+    "Pantalla: 5.8\" OLED",
+    "Procesador: A13 Bionic",
+    "RAM: 4 GB",
+    "Almacenamiento: 64/256/512 GB",
+    "Batería: 3046 mAh",
+    "Cámara: 12 MP (triple trasera), 12 MP (frontal)"
+  ],
+  priceLink: "https://encarguelo.com.ec/producto/B08BHJ5XH9/apple-iphone-11-pro-64gb-gold-unlocked-renewed-premium"
+},
+
+"iPhone 11 Pro Max": {
+  image: "i11pm.png",
+  specs: [
+    "Pantalla: 6.5\" OLED",
+    "Procesador: A13 Bionic",
+    "RAM: 4 GB",
+    "Almacenamiento: 64/256/512 GB",
+    "Batería: 3969 mAh",
+    "Cámara: 12 MP (triple trasera), 12 MP (frontal)"
+  ],
+  priceLink: "https://www.ubuy.ec/es/product/4K2YYIUA8-apple-iphone-11-pro-max-64gb-gold-unlocked-a2161-cdma-gsm"
+},
+
+"iPhone 12": {
+  image: "i12.png",
+  specs: [
+    "Pantalla: 6.1\" OLED",
+    "Procesador: A14 Bionic",
+    "RAM: 4 GB",
+    "Almacenamiento: 64/128/256 GB",
+    "Batería: 2815 mAh",
+    "Cámara: 12 MP (dual trasera), 12 MP (frontal)"
+  ],
+  priceLink: "https://encarguelo.com.ec/producto/B09BBTWGYT/apple-iphone-12-mini-256-gb-morado-desbloqueado-renovado"
+},
+
+"iPhone 12 Pro": {
+  image: "i12p.png",
+  specs: [
+    "Pantalla: 6.1\" OLED",
+    "Procesador: A14 Bionic",
+    "RAM: 6 GB",
+    "Almacenamiento: 128/256/512 GB",
+    "Batería: 2815 mAh",
+    "Cámara: 12 MP (triple trasera), 12 MP (frontal)"
+  ],
+  priceLink: "https://www.mercadolibre.com.ec/apple-iphone-12-pro-256-gb-azul-pacifico/p/MEC16163686"
+},
+
+"iPhone 12 Pro Max": {
+  image: "i12pm.png",
+  specs: [
+    "Pantalla: 6.7\" OLED",
+    "Procesador: A14 Bionic",
+    "RAM: 6 GB",
+    "Almacenamiento: 128/256/512 GB",
+    "Batería: 3687 mAh",
+    "Cámara: 12 MP (triple trasera), 12 MP (frontal)"
+  ],
+  priceLink: "https://www.bluemagic.ec/productos/iphone/iphone-12-pro-max-de-128-gb-2/"
+},
+
+"iPhone 13": {
+  image: "i13.png",
+  specs: [
+    "Pantalla: 6.1\" OLED",
+    "Procesador: A15 Bionic",
+    "RAM: 4 GB",
+    "Almacenamiento: 128/256/512 GB",
+    "Batería: 3240 mAh",
+    "Cámara: 12 MP (dual trasera), 12 MP (frontal)"
+  ],
+  priceLink: "https://www.mercadolibre.com.ec/apple-iphone-13-128-gb-rosa/p/MEC18500849"
+},
+
+"iPhone 13 Pro": {
+  image: "i13p.png",
+  specs: [
+    "Pantalla: 6.1\" OLED ProMotion",
+    "Procesador: A15 Bionic",
+    "RAM: 6 GB",
+    "Almacenamiento: 128/256/512 GB, 1 TB",
+    "Batería: 3095 mAh",
+    "Cámara: 12 MP (triple trasera), 12 MP (frontal)"
+  ],
+  priceLink: "https://www.bluemagic.ec/productos/iphone/iphone-13-pro-de-256-gb-2/"
+},
+
+"iPhone 13 Pro Max": {
+  image: "i13pm.png",
+  specs: [
+    "Pantalla: 6.7\" OLED ProMotion",
+    "Procesador: A15 Bionic",
+    "RAM: 6 GB",
+    "Almacenamiento: 128/256/512 GB, 1 TB",
+    "Batería: 4352 mAh",
+    "Cámara: 12 MP (triple trasera), 12 MP (frontal)"
+  ],
+  priceLink: "https://encarguelo.com.ec/producto/B09LPDM924/apple-iphone-13-pro-max-128gb-sierra-blue-unlocked-renewed"
+},
+
+"iPhone 14": {
+  image: "i14.png",
+  specs: [
+    "Pantalla: 6.1\" OLED",
+    "Procesador: A15 Bionic",
+    "RAM: 6 GB",
+    "Almacenamiento: 128/256/512 GB",
+    "Batería: 3279 mAh",
+    "Cámara: 12 MP (dual trasera), 12 MP (frontal)"
+  ],
+  priceLink: "hhttps://encarguelo.com.ec/producto/B0BN721X22/apple-iphone-14-128-gb-morado-para-att-renovado"
+},
+
+"iPhone 14 Pro": {
+  image: "i14p.png",
+  specs: [
+    "Pantalla: 6.1\" OLED Always-On",
+    "Procesador: A16 Bionic",
+    "RAM: 6 GB",
+    "Almacenamiento: 128/256/512 GB, 1 TB",
+    "Batería: 3200 mAh",
+    "Cámara: 48 MP (triple trasera), 12 MP (frontal)"
+  ],
+  priceLink: "https://encarguelo.com.ec/producto/B0BYLNF1ZB/apple-iphone-14-pro-256gb-gold-unlocked-renewed-premium"
+},
+
+"iPhone 14 Pro Max": {
+  image: "i14pm.png",
+  specs: [
+    "Pantalla: 6.7\" OLED Always-On",
+    "Procesador: A16 Bionic",
+    "RAM: 6 GB",
+    "Almacenamiento: 128/256/512 GB, 1 TB",
+    "Batería: 4323 mAh",
+    "Cámara: 48 MP (triple trasera), 12 MP (frontal)"
+  ],
+  priceLink: "https://www.smartbuyecuador.com/products/iphone-14-pro-max-sim-fisico-open-box?variant=41955586768943"
+},
+
+"iPhone 15": {
+  image: "i15.png",
+  specs: [
+    "Pantalla: 6.1\" OLED Super Retina XDR",
+    "Procesador: A17 Pro",
+    "RAM: 6 GB",
+    "Almacenamiento: 128/256/512 GB",
+    "Batería: 3349 mAh",
+    "Cámara: 48 MP (dual trasera), 12 MP (frontal)"
+  ],
+  priceLink: "https://think-ecuador.com/tienda/iphone-15/"
+},
+
+"iPhone 15 Pro": {
+  image: "i15p.png",
+  specs: [
+    "Pantalla: 6.1\" OLED Super Retina XDR ProMotion",
+    "Procesador: A17 Pro",
+    "RAM: 8 GB",
+    "Almacenamiento: 128/256/512 GB, 1 TB",
+    "Batería: 2915 mAh",
+    "Cámara: 48 MP (triple trasera), 12 MP (frontal)"
+  ],
+  priceLink: "https://encarguelo.com.ec/producto/B0CMYXFK3R/apple-iphone-15-pro-256-gb-azul-titanio-desbloqueado-renovado"
+},
+
+"iPhone 15 Pro Max": {
+  image: "i15pm.png",
+  specs: [
+    "Pantalla: 6.7\" OLED Super Retina XDR ProMotion",
+    "Procesador: A17 Pro",
+    "RAM: 8 GB",
+    "Almacenamiento: 128/256/512 GB, 1 TB",
+    "Batería: 4422 mAh",
+    "Cámara: 48 MP (triple trasera), 12 MP (frontal)"
+  ],
+  priceLink: "https://ec.tiendasishop.com/producto/iphone-15-pro-max-256gb-titanio-natural/"
+},
+"ZTE Axon 60": {
+  image: "axon60.png",
+  specs: [
+    "Pantalla: 6.72\" IPS LCD FHD+",
+    "Procesador: Unisoc Tiger T616 Octa-core 2.0 GHz",
+    "RAM: 6 GB",
+    "Almacenamiento: 256 GB",
+    "Batería: 5000 mAh",
+    "Cámara: Triple 50 MP (principal), 2 MP (macro), 2 MP (profundidad); frontal de 32 MP"
+  ],
+  priceLink: "https://www.mercadolibre.com.mx/zte-axon-60-256-gb-dorado-6-gb-ram/p/MLM36753435"
+},
+
+"ZTE Axon 60 Lite": {
+  image: "ax60li.png",
+  specs: [
+    "Pantalla: 6.6\" IPS LCD HD+",
+    "Procesador: Unisoc Tiger T606 Octa-core 1.6 GHz",
+    "RAM: 4 GB",
+    "Almacenamiento: 256 GB",
+    "Batería: 5000 mAh",
+    "Cámara: Triple 50 MP (principal), 2 MP (macro), IA; frontal de 8 MP"
+  ],
+  priceLink: "https://www.mercadolibre.com.mx/zte-axon-60-lite-dual-sim-256-gb-azul-oscuro-4-gb-ram/p/MLM38806580"
+},
+
+"ZTE Axon 50 5G": {
+  image: "axon50.png",
+  specs: [
+    "Pantalla: 6.67\" AMOLED FHD+",
+    "Procesador: Qualcomm Snapdragon 695 5G",
+    "RAM: 6 GB",
+    "Almacenamiento: 128 GB",
+    "Batería: 4500 mAh",
+    "Cámara: Triple 64 MP (principal), 8 MP (ultra gran angular), 2 MP (macro); frontal de 16 MP"
+  ],
+  priceLink: "https://ztedevices.mx/smartphones/axon-50-5g/"
+},
+
+"ZTE Axon 50 Lite": {
+  image: "axon50l.png",
+  specs: [
+    "Pantalla: 6.6\" IPS LCD FHD+",
+    "Procesador: Unisoc Tiger T618 Octa-core 2.0 GHz",
+    "RAM: 4 GB",
+    "Almacenamiento: 64 GB",
+    "Batería: 5000 mAh",
+    "Cámara: Triple 50 MP (principal), 2 MP (macro), 2 MP (profundidad); frontal de 8 MP"
+  ],
+  priceLink: "https://ztedevices.mx/smartphones/axon-50-lite/"
+},
+
+"ZTE Axon 40 Ultra 5G": {
+  image: "axon40.png",
+  specs: [
+    "Pantalla: 6.8\" AMOLED FHD+ 120 Hz",
+    "Procesador: Qualcomm Snapdragon 8 Gen 1",
+    "RAM: 12 GB",
+    "Almacenamiento: 256 GB",
+    "Batería: 5000 mAh",
+    "Cámara: Triple 64 MP (principal), 64 MP (ultra gran angular), 64 MP (telefoto); frontal de 16 MP"
+  ],
+  priceLink: "https://tiendamia.com/ec/p/amz/b07vtn5r6w/zte-axon-40-ultra-smartphone-5g-unlocked-android-cell"
+},
+
+"ZTE Nubia Red Magic 8 Pro": {
+  image: "redmagic8.png",
+  specs: [
+    "Pantalla: 6.8\" AMOLED FHD+ 120 Hz",
+    "Procesador: Qualcomm Snapdragon 8 Gen 2",
+    "RAM: 12 GB",
+    "Almacenamiento: 256 GB",
+    "Batería: 6000 mAh",
+    "Cámara: Triple 50 MP (principal), 8 MP (ultra gran angular), 2 MP (macro); frontal de 16 MP bajo pantalla"
+  ],
+  priceLink: "https://mundotek.com.ec/producto/zte-nubia-red-magic-8-pro-12gb-256-gb/"
+},
+
+"ZTE Nubia Z60 Ultra": {
+  image: "z60.png",
+  specs: [
+    "Pantalla: 6.8\" AMOLED FHD+ 120 Hz",
+    "Procesador: Qualcomm Snapdragon 8 Gen 2",
+    "RAM: 16 GB",
+    "Almacenamiento: 512 GB",
+    "Batería: 5000 mAh",
+    "Cámara: Triple 50 MP (principal), 50 MP (ultra gran angular), 50 MP (telefoto); frontal de 16 MP"
+  ],
+  priceLink: "https://intl.nubia.com/products/nubia-z60-ultra/?variant=43018861478086"
+},
+"Xiaomi 14 Pro": {
+  image: "xi14p.png",
+  specs: [
+    "Pantalla: 6.73\" AMOLED 120 Hz",
+    "Procesador: Qualcomm Snapdragon 8 Gen 3",
+    "RAM: 12 GB",
+    "Almacenamiento: 256 GB",
+    "Batería: 5000 mAh",
+    "Cámara: Cuádruple 50 MP (principal), 50 MP (ultra gran angular), 50 MP (telefoto), 50 MP (periscópica); frontal de 32 MP"
+  ],
+  priceLink: "https://www.mercadolibre.com.ec/xiaomi-14-pro-dual-sim-512-gb-negro-16-gb-ram/p/MEC29807453"
+},
+
+"Xiaomi 14": {
+  image: "xi14p.png",
+  specs: [
+    "Pantalla: 6.36\" AMOLED 120 Hz",
+    "Procesador: Qualcomm Snapdragon 8 Gen 3",
+    "RAM: 8 GB",
+    "Almacenamiento: 128 GB",
+    "Batería: 4600 mAh",
+    "Cámara: Triple 50 MP (principal), 10 MP (ultra gran angular), 10 MP (telefoto); frontal de 32 MP"
+  ],
+  priceLink: "https://tiendamia.com/ec/p/mkt/302205_5c770b1f/camara-triple-xiaomi-14-5g-lte-global-unlocked-256-gb"
+},
+
+"Xiaomi 15 Pro": {
+  image: "xi15p.png",
+  specs: [
+    "Pantalla: 6.73\" AMOLED 120 Hz",
+    "Procesador: Qualcomm Snapdragon 8 Gen 3",
+    "RAM: 12 GB",
+    "Almacenamiento: 256 GB",
+    "Batería: 5000 mAh",
+    "Cámara: Triple 50 MP (principal), 50 MP (ultra gran angular), 50 MP (telefoto); frontal de 32 MP"
+  ],
+  priceLink: "https://www.mi.com/global/xiaomi-15-pro"
+},
+
+"Xiaomi 15": {
+  image: "xiaomi15.jpg",
+  specs: [
+    "Pantalla: 6.36\" AMOLED 120 Hz",
+    "Procesador: Qualcomm Snapdragon 8 Gen 3",
+    "RAM: 8 GB",
+    "Almacenamiento: 128 GB",
+    "Batería: 4600 mAh",
+    "Cámara: Triple 50 MP (principal), 10 MP (ultra gran angular), 10 MP (telefoto); frontal de 32 MP"
+  ],
+  priceLink: "https://www.mi.com/global/xiaomi-15"
+},
+
+"Xiaomi 13 Ultra": {
+  image: "xi13ul.png",
+  specs: [
+    "Pantalla: 6.73\" AMOLED 120 Hz",
+    "Procesador: Qualcomm Snapdragon 8 Gen 2",
+    "RAM: 12 GB",
+    "Almacenamiento: 256 GB",
+    "Batería: 5000 mAh",
+    "Cámara: Cuádruple 50 MP (principal), 50 MP (ultra gran angular), 50 MP (telefoto), 50 MP (periscópica); frontal de 32 MP"
+  ],
+  priceLink: "https://artificios.com.ec/producto/xiaomi-13-ultra-12ram-256gb/"
+}
+
+    };
+
+    function filterDevices() {
+      let searchQuery = document.getElementById('search').value.toLowerCase();
+      let deviceList = document.getElementById('deviceList');
+      deviceList.innerHTML = '';
+
+      for (let device in devices) {
+        if (device.toLowerCase().startsWith(searchQuery)) {
+          let li = document.createElement('li');
+          li.textContent = device;
+          li.onclick = function() {
+            // Al hacer clic, llena el input de búsqueda con el dispositivo seleccionado
+            document.getElementById('search').value = device;
+            deviceList.innerHTML = '';  // Oculta las opciones al seleccionar
+            showDeviceDetails(device);
+          };
+          deviceList.appendChild(li);
+        }
+      }
+    }
+
+    function showDeviceInfo() {
+      let device = document.getElementById("deviceSelect").value;
+      if (device && devices[device]) {
+        showDeviceDetails(device);
+      }
+    }
+
+    function showDeviceDetails(deviceName) {
+      let device = devices[deviceName];
+      document.getElementById("deviceImage").src = device.image;
+      document.getElementById("deviceSpecs").innerHTML =
+        "<h2>" + deviceName + "</h2>" +
+        "<ul>" +
+          device.specs.map(spec => "<li>" + spec + "</li>").join("") +
+        "</ul>" +
+        "<div style='clear: both;'></div>" + // Limpia el float para que el botón quede fijo debajo de la lista
+        // Aquí se inserta el botón "Precio" individual, justo debajo de la última especificación.
+        "<a href='" + device.priceLink + "' class='precio-btn'>Precio</a>";
+      document.getElementById("deviceDetails").style.display = "block";
+    }
+  </script>
+</body>
+</html>
